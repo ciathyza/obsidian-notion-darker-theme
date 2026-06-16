@@ -208,6 +208,23 @@ code[class*="language-"],
 }
 
 /* =====================
+   Page Padding
+   Direct override — variable cascade alone is not enough since Obsidian
+   resolves --file-margins before theme variables apply in some builds.
+   ===================== */
+.markdown-preview-view,
+.view-content > .markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller {
+  padding: 64px !important;
+}
+
+/* =====================
+   Inline Title
+   ===================== */
+.inline-title {
+  display: none;
+}
+
+/* =====================
    Font Smoothing
    Antialiased rendering gives the lighter, crisper look seen in Typora
    ===================== */
