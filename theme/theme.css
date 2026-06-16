@@ -52,6 +52,22 @@
   --background-modifier-form-field: var(--color-base-25);
   --background-secondary-alt: var(--color-base-30);
   --highlight-mix-blend-mode: lighten;
+
+  /* Code block background — --code-block-bg-color: #171717 */
+  --code-background: #171717;
+
+  /* Syntax highlighting — mapped from Typora .cm-s-inner token colors */
+  --code-normal:      #dcdcdc;  /* base code text */
+  --code-comment:     #998066;  /* .cm-comment */
+  --code-keyword:     #67a2cc;  /* .cm-keyword */
+  --code-function:    #67a2cc;  /* .cm-builtin / .token.function — same hue as keyword */
+  --code-string:      #bde051;  /* .cm-string, .cm-string-2, .cm-type */
+  --code-value:       #e06c75;  /* .cm-number, .cm-atom */
+  --code-tag:         #e06c75;  /* .cm-tag, .token.tag */
+  --code-operator:    #f5b73d;  /* .cm-operator */
+  --code-property:    #dcdcdc;  /* .cm-variable — same as normal */
+  --code-punctuation: #cb4b16;  /* .cm-bracket */
+  --code-important:   #6c71c4;  /* .cm-special / .token.regex */
 }
 
 /* =====================
@@ -66,6 +82,9 @@ body {
     "Source Han Mono", "Space Mono", "Inconsolata", monospace;
 
   --font-text-size: 16px;
+
+  /* Override Obsidian default (1.5) to match Typora --line-height: 1.4 */
+  --line-height-normal: 1.4;
 }
 
 /* =====================
@@ -89,7 +108,6 @@ body {
   --h6-weight: 400;
 
   /* Layout */
-  --line-height-normal: 1.4;
   --file-line-width: 130ch;
 
   /* Blockquote — left border in text color, no italic */
@@ -103,18 +121,46 @@ body {
   --checkbox-color: #2483e2;
   --checkbox-color-hover: #1a6bbf;
   --checkbox-marker-color: #ffffff;
+}
 
-  /* Code block background — --code-block-bg-color: #171717 */
-  --code-background: #171717;
+/* =====================
+   Prism Token Remaps
+   Prism's C# grammar tokenizes XML doc-comment lines differently from CM6:
+   "///" slashes → .token.operator, "<summary>" → .token.tag
+   CM6 colours the entire doc-comment as a comment (warm brown).
+   Remap .token.tag inside code blocks to comment color to match edit mode.
+   (.token.operator is already amber which is close enough to CM6's operator.)
+   ===================== */
+.markdown-rendered pre .token.tag,
+.markdown-rendered pre .token.tag .token.punctuation,
+.markdown-rendered pre .token.tag .token.attr-name,
+.markdown-rendered pre .token.tag .token.attr-value {
+  color: var(--code-comment);
+}
+
+/* =====================
+   Code Block Line Height
+   Edit mode: .HyperMD-codeblock lines inside CM6 editor
+   Read mode: pre container + code[class*="language-"] (Prism sets it explicitly
+   on the code element, overriding pre inheritance, so both must be targeted)
+   Live preview: .cm-preview-code-block pre (rendered inside source view)
+   ===================== */
+.cm-s-obsidian .HyperMD-codeblock,
+.markdown-rendered pre,
+.markdown-rendered pre code,
+code[class*="language-"],
+.markdown-source-view.mod-cm6 .cm-preview-code-block pre {
+  line-height: 1.1;
 }
 
 /* =====================
    Inline Code
-   Separate bg (#292927) and color (#eb5757) from block code
+   Separate bg (#292927) from block code; light gray text instead of red.
+   Read mode: exclude code inside pre (that's block code, not inline).
    ===================== */
 .cm-s-obsidian span.cm-inline-code,
-.markdown-rendered code {
-  color: #eb5757;
+.markdown-rendered :not(pre) > code {
+  color: #89b4d4;
   background-color: #292927;
 }
 
