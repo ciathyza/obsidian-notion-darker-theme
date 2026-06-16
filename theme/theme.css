@@ -53,8 +53,12 @@
   --background-secondary-alt: var(--color-base-30);
   --highlight-mix-blend-mode: lighten;
 
+  /* Table header row background */
+  --table-header-background: #191919;
+  --table-header-background-hover: #191919;
+
   /* Code block background — --code-block-bg-color: #171717 */
-  --code-background: #171717;
+  --code-background: #191919;
 
   /* Syntax highlighting — mapped from Typora .cm-s-inner token colors */
   --code-normal:      #dcdcdc;  /* base code text */
@@ -190,6 +194,22 @@ code[class*="language-"],
 }
 
 /* =====================
+   List Spacing
+   Add margin between top-level list items only; nested items stay tight.
+   ===================== */
+.markdown-rendered ul > li,
+.markdown-rendered ol > li {
+  margin-bottom: 0.4em;
+}
+
+.markdown-rendered ul ul > li,
+.markdown-rendered ol ol > li,
+.markdown-rendered ul ol > li,
+.markdown-rendered ol ul > li {
+  margin-bottom: 0;
+}
+
+/* =====================
    Horizontal Rule
    ===================== */
 .markdown-rendered hr {
@@ -215,6 +235,82 @@ code[class*="language-"],
 .markdown-preview-view,
 .view-content > .markdown-source-view.mod-cm6 > .cm-editor > .cm-scroller {
   padding: 64px !important;
+}
+
+/* =====================
+   Mermaid Diagrams
+   Obsidian dark mode applies filter: invert + hue-rotate to Mermaid SVGs,
+   producing harsh blue/yellow colors. Remove that and apply our palette.
+   ===================== */
+.theme-dark .mermaid > svg {
+  filter: none;
+}
+
+.mermaid > svg {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Node shapes */
+.mermaid .node rect,
+.mermaid .node circle,
+.mermaid .node ellipse,
+.mermaid .node polygon,
+.mermaid .node path {
+  fill: #2c2c2c !important;
+  stroke: #555555 !important;
+}
+
+/* Node text — SVG <text> elements use fill; foreignObject HTML uses color */
+.mermaid .node .label,
+.mermaid .node text,
+.mermaid .label,
+.mermaid text,
+.mermaid .nodeLabel,
+.mermaid .nodeLabel p,
+.mermaid .label div,
+.mermaid .label span,
+.mermaid foreignObject div,
+.mermaid foreignObject span,
+.mermaid foreignObject p {
+  fill: #f0f0f0 !important;
+  color: #f0f0f0 !important;
+  font-size: 13px !important;
+}
+
+/* Edges */
+.mermaid .edgePath .path,
+.mermaid .flowchart-link {
+  stroke: #7c7c7c !important;
+}
+
+.mermaid .arrowheadPath {
+  fill: #7c7c7c !important;
+  stroke: #7c7c7c !important;
+}
+
+/* Subgraph / cluster */
+.mermaid .cluster rect {
+  fill: #191919 !important;
+  stroke: #282828 !important;
+}
+
+.mermaid .cluster .label,
+.mermaid .cluster text {
+  fill: #9c9c9c !important;
+  color: #9c9c9c !important;
+}
+
+/* Edge labels */
+.mermaid .edgeLabel {
+  background-color: #141414 !important;
+  color: #d4d4d4 !important;
+}
+
+.mermaid .edgeLabel rect {
+  fill: #141414 !important;
+  opacity: 0.85 !important;
 }
 
 /* =====================
